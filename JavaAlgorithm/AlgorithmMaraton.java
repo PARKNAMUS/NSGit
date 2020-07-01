@@ -1,6 +1,10 @@
 package park.java.ex01;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 public class AlgorithmMaraton {
 /*
@@ -33,24 +37,18 @@ mislav´Â Âü¿©ÀÚ ¸í´Ü¿¡´Â µÎ ¸íÀÌ ÀÖÁö¸¸, ¿ÏÁÖÀÚ ¸í´Ü¿¡´Â ÇÑ ¸í¹Û¿¡ ¾ø±â ¶§¹®¿¡ Ç
  * */
 	public String solution(String [] participant, String [] completion) {
 		String answer = "";
-		HashMap<String, String> maratoners = new HashMap<String, String>();
-		
-		for(int i=0;i<participant.length;i++) {
-			for(int j=0;j<completion.length;j++) {
-				if(participant[i].equals(completion[j])) {
-					maratoners.put(participant[i], "success");
-					break;
-				}
-				if(j== completion.length-1 && !participant[i].equals(completion[j])) {
-					maratoners.put(participant[i], "fail");
-				}
+		Map<String,Integer> players = new HashMap<String, Integer>();
+		for(String person:participant) {
+			players.put(person, players.getOrDefault(person, 0)+1);
+		}
+		for(String person:completion) {
+			players.put(person, players.get(person)-1);
+		}
+		for(String person:players.keySet()) {
+			if(players.get(person) != 0) {
+				answer = person;
 			}
 		}
-		
-		for(int i=0; i<maratoners.size();i++) {
-			if(maratoners.get(participant[i]).equals("fail"))answer = participant[i];
-		}
-		
 		return answer;
 	}
 	
