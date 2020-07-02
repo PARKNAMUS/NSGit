@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+	<bean id="memberService" class="park.spring.member.service.MemberServiceImpl"></bean>
+	<bean id="readArticleService" class="park.spring.board.service.ReadArticleServiceImpl"></bean>
+	<bean id="loggingAdvice" class="park.spring.common.LoggingAdvice"></bean>
+	<bean id="cacheAdvice" class="park.spring.common.ArticleCacheAdvice"></bean>
+	<bean id="traceAdvice" class="park.spring.common.UpdateMemeberInfoTraceAdvice"></bean>
+	<aop:config>
+		<aop:aspect id="loggingAspect" ref="loggingAdvice" order="1">
+			<aop:pointcut expression="execution(public * park.spring..*(..))" id="publicMethod"/>
+			<aop:before method="before" pointcut-ref="publicMethod"/>
+			<aop:after-returning method="afterReturning" pointcut-ref="publicMethod" returning="ret"/>
+			<aop:after-throwing method="afterThrowing" pointcut-ref="publicMethod" throwing="ex"/>
+			<aop:after method="afterFinally" pointcut-ref="publicMethod"/>
+		</aop:aspect>
+		<aop:aspect id="cacheAspect" ref="cacheAdvice" order="2">
+			<aop:around method="cache" pointcut="execution(public * *..ReadArticleServiceImpl.*(..))"/>
+		</aop:aspect>
+		<aop:aspect id="traceAspect" ref="traceAdvice" order="3">
+			<aop:after-returning method="traceReturn" pointcut="args(id,info)" returning="result" arg-names="joinPoint,result,id,info"/>
+		</aop:aspect>
+	</aop:config>	
+</beans>

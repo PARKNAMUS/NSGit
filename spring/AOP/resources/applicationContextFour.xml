@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	
+	<bean id="memberService" class="park.spring.member.service.MemberServiceImpl"></bean>
+	<bean id="readArticleService" class="park.spring.board.service.ReadArticleServiceImpl"></bean>
+	
+	<bean id="traceAspect" class="park.spring.common.UpdateMemberInfoTraceAspect"></bean>
+	<bean id="cacheAspect" class="park.spring.common.ArticleCacheAspect"></bean>
+	<bean id="loggingAspect" class="park.spring.common.LogginAspect"></bean>
+	
+</beans>
